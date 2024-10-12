@@ -15,7 +15,7 @@ async def fetch_stock_prices(tickers: list):
     """Fetches stock prices using yfinance for the given tickers."""
     logger.info("Fetching stock prices data")
     cached_prices = {}
-    remaining_tickers = []
+    remaining_tickers = set()  # Use a set to store unique tickers
     
     # Check Redis cache for each ticker
     for ticker in tickers:
@@ -23,21 +23,24 @@ async def fetch_stock_prices(tickers: list):
         if cached_price is not None:
             cached_prices[ticker] = float(cached_price)  # Convert to plain float
         else:
-            remaining_tickers.append(ticker)
+            remaining_tickers.add(ticker)  # Add to set for uniqueness
     
     if not remaining_tickers:
         return cached_prices
 
+    # Convert the set back to a list for yfinance API call
+    unique_tickers = list(remaining_tickers)
+
     # Fetch prices for remaining tickers using yfinance
     try:
-        tickers_str = " ".join(remaining_tickers)
+        tickers_str = " ".join(unique_tickers)
         stock_data = yf.download(tickers_str, period="1d")
         
         logger.info(f"Stock Data : {stock_data}")
 
         # Use the new data handler to process stock data
-        return process_stock_data(stock_data, remaining_tickers)
+        return process_stock_data(stock_data, unique_tickers)
         
     except Exception as e:
-        logger.error(f"Error fetching US stock prices for {remaining_tickers}: {e}")
-        return {ticker: "ticker not found" for ticker in remaining_tickers}
+        logger.error(f"Error fetching US stock prices for {unique_tickers}: {e}")
+        return {ticker: "ticker not found" for ticker in unique_tickers}

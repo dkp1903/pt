@@ -1,3 +1,5 @@
+# mutual_fund_fetcher.py
+
 import httpx
 from app.caching import cache_get, cache_set
 import logging
@@ -8,22 +10,25 @@ async def fetch_mutual_fund_prices(isins: list, api_url: str):
     """Fetches mutual fund NAV using the provided API and ISINs."""
     logger.info("Fetching mutual fund prices")
     cached_prices = {}
-    remaining_isins = []
+    remaining_isins = set()  # Use a set to store unique ISINs
 
     # Check Redis cache for each ISIN
     for isin in isins:
         cached_price = await cache_get(isin)
-        if cached_price is not None:  # Ensure cached price is valid
+        if cached_price is not None:
             cached_prices[isin] = float(cached_price)  # Convert to plain float
         else:
-            remaining_isins.append(isin)
+            remaining_isins.add(isin)  # Add to set for uniqueness
     
     if not remaining_isins:
         return cached_prices
 
+    # Convert the set back to a list for API calls
+    unique_isins = list(remaining_isins)
+
     # Fetch data from the external API for remaining ISINs
     async with httpx.AsyncClient() as client:
-        for isin in remaining_isins:
+        for isin in unique_isins:
             try:
                 response = await client.get(f"{api_url}/{isin}", timeout=5)
                 if response.status_code == 200:

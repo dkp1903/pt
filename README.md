@@ -13,9 +13,12 @@ python3 -m venv venv
 
 source venv/bin/activate
 
-chmod +x setup.sh
+pip install -r requirements.txt
 
-./setup.sh
+docker run -d -p 6379:6379 --name redis redis
+
+uvicorn main:app --reload
+
 
 ```
 
@@ -30,6 +33,12 @@ chmod +x setup.sh
 
 [X]Cache error handling
 
-[]Indian MFs data flow
+[X]Indian MFs data flow
 
-[]Refactored content to handle malformed payloads
+[X]Refactored content to handle malformed payloads
+
+[X]Handle single and multi ticker cases
+
+[X]Multiple entries of same ticker doesn't mean multiple entries during API call
+
+[]GraphQL layer to optimize ISIN content
