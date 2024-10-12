@@ -1,7 +1,7 @@
 ### env variables
 
 ```
-INDIA_MUTUAL_FUND_API_URL=https://api.example.com/mutual-fund
+INDIA_MUTUAL_FUND_API_URL=https://mf.captnemo.in/nav/
 REDIS_HOST=localhost
 REDIS_PORT=6379
 ```
@@ -25,20 +25,20 @@ uvicorn main:app --reload
 
 ### Status of items
 
-[X]US stock market data flow
+- [x] US stock market data flow
 
-[X]Two level caching
+- [x] Two level caching
 
-[X]Rate limiting
+- [x] Rate limiting
 
-[X]Cache error handling
+- [x] Cache error handling
 
-[X]Indian MFs data flow
+- [x] Indian MFs data flow
 
-[X]Refactored content to handle malformed payloads
+- [x] Refactored content to handle malformed payloads
 
-[X]Handle single and multi ticker cases
+- [x] Handle single and multi ticker cases
 
-[X]Multiple entries of same ticker doesn't mean multiple entries during API call
+- [x] Multiple entries of same ticker doesn't mean multiple entries during API call
 
-[]GraphQL layer to optimize ISIN content
+- [ ] GraphQL layer to optimize ISIN content
