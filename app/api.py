@@ -4,14 +4,11 @@ from app.fetchers import get_prices
 from app.rate_limiter import rate_limiter
 import logging
 
-# Set up the router
 router = APIRouter()
 
-# Set up logging
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
-# Request body model
 class TickerRequest(BaseModel):
     ticker: str
     country: str
