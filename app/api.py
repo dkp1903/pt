@@ -28,6 +28,7 @@ async def get_prices_endpoint(payload: TickerPayload, request: Request):
         
         # Fetch prices (both US stocks and Indian mutual funds)
         results = await get_prices(payload.tickers)
+        logger.info("Get Prices done")
         return {"prices": results}
     
     except HTTPException as e:
