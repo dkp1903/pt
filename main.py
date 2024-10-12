@@ -3,7 +3,6 @@ from app.api import router
 
 app = FastAPI()
 
-# Register API routes
 app.include_router(router)
 
 @app.get("/")
