@@ -1,6 +1,6 @@
 from fastapi import APIRouter, HTTPException, Request
 from pydantic import BaseModel
-from app.fetchers import get_prices
+from app.fetchers.price_fetcher import get_prices
 from app.rate_limiter import rate_limiter
 import logging
 
