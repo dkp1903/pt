@@ -1,3 +1,11 @@
+### env variables
+
+```
+INDIA_MUTUAL_FUND_API_URL=https://api.example.com/mutual-fund
+REDIS_HOST=localhost
+REDIS_PORT=6379
+```
+
 ### Steps to run
 
 ```
