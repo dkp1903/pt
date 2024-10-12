@@ -1,8 +1,10 @@
+# stock_fetcher.py
+
 import yfinance as yf
 import requests_cache
 from app.caching import cache_get, cache_set
 import logging
-import pandas as pd
+from .data_handler import process_stock_data  # Import the new data handler
 
 logger = logging.getLogger(__name__)
 
@@ -10,6 +12,7 @@ logger = logging.getLogger(__name__)
 requests_cache.install_cache('yfinance_cache', expire_after=86400)
 
 async def fetch_stock_prices(tickers: list):
+    """Fetches stock prices using yfinance for the given tickers."""
     logger.info("Fetching stock prices data")
     cached_prices = {}
     remaining_tickers = []
@@ -32,28 +35,9 @@ async def fetch_stock_prices(tickers: list):
         
         logger.info(f"Stock Data : {stock_data}")
 
-        if stock_data.empty:
-            logger.error("Received empty stock data.")
-            return {ticker: "ticker not found" for ticker in remaining_tickers}
-
-        if stock_data.columns.nlevels == 2:
-            for ticker in remaining_tickers:
-                if ticker in stock_data.columns.get_level_values(1):
-                    price = float(stock_data["Close"][ticker].iloc[-1])  # Convert to float
-                    cached_prices[ticker] = price
-                    logger.info(f"Ticker setting : {ticker} - {price}")
-                    await cache_set(ticker, price)
-                else:
-                    logger.info(f"Ticker not found : {ticker}")
-                    cached_prices[ticker] = "ticker not found"
-        else:
-            for ticker in remaining_tickers:
-                price = float(stock_data["Close"].iloc[-1])  # Convert to float
-                cached_prices[ticker] = price
-                logger.info(f"Ticker setting : {ticker} - {price}")
-                await cache_set(ticker, price)
-
-        return cached_prices
+        # Use the new data handler to process stock data
+        return process_stock_data(stock_data, remaining_tickers)
+        
     except Exception as e:
         logger.error(f"Error fetching US stock prices for {remaining_tickers}: {e}")
         return {ticker: "ticker not found" for ticker in remaining_tickers}
