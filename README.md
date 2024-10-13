@@ -42,4 +42,4 @@ uvicorn main:app --reload
 
 - [x] Multiple entries of same ticker doesn't mean multiple entries during API call
 
-- [ ] GraphQL layer to optimize ISIN content
+- [x] GraphQL layer to optimize ISIN content
