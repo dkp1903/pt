@@ -27,7 +27,7 @@ async def get_prices_endpoint(payload: TickerPayload, request: Request):
             raise HTTPException(status_code=400, detail="Tickers list cannot be empty.")
         
         # Fetch prices (both US stocks and Indian mutual funds)
-        results = await get_prices(payload.tickers)
+        results = await get_prices(payload.tickers, request)
         logger.info("Get Prices done")
         return {"prices": results}
     

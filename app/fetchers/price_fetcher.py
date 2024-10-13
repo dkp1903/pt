@@ -2,10 +2,11 @@ from app.fetchers.stock_fetcher import fetch_stock_prices
 from app.fetchers.mutual_fund_fetcher import fetch_mutual_fund_prices
 from app.config import settings
 import logging
+from fastapi import Request
 
 logger = logging.getLogger(__name__)
 
-async def get_prices(tickers_info):
+async def get_prices(tickers_info, request: Request):
     """Fetches prices for both US stocks and Indian mutual funds."""
     logger.info("Processing price requests")
 
@@ -22,7 +23,7 @@ async def get_prices(tickers_info):
 
     # Fetch mutual fund prices
     if isins:
-        prices = await fetch_mutual_fund_prices(isins, settings.INDIA_MUTUAL_FUND_API_URL)
+        prices = await fetch_mutual_fund_prices(isins, request)
         results.update(prices)
 
     # Return the results for both US stocks and Indian mutual funds

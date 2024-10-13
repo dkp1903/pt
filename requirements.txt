@@ -7,3 +7,5 @@ pydantic==1.10.7
 python-dotenv==1.0.0
 yfinance==0.2.30
 requests-cache==0.9.8
+graphene
+ariadne
