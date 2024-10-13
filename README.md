@@ -4,6 +4,7 @@
 INDIA_MUTUAL_FUND_API_URL=https://mf.captnemo.in/nav/
 REDIS_HOST=localhost
 REDIS_PORT=6379
+GRAPHQL_URL=http://localhost:8000/graphql # Change localhost to wherever the app is running
 ```
 
 ### Steps to run
